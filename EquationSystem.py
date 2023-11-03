@@ -5,7 +5,7 @@ Created on Thu Nov  2 20:48:28 2023
 @author: Dongli
 """
 
-class Matrix:
+class EquationSystem:
     '''
     init and basic functions
     '''
