@@ -6,6 +6,7 @@ Created on Thu Nov  2 20:48:28 2023
 """
 
 class EquationSystem:
+    
     '''
     init and basic functions
     '''
@@ -137,5 +138,5 @@ class EquationSystem:
             self._print_matrix()      
 
         # Return answer
-        return [row[-1] for row in self.matrix]
+        return [round(row[-1], 2) for row in self.matrix]
         
