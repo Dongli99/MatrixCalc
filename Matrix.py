@@ -9,7 +9,7 @@ class Matrix:
     
     def __init__(self, matrix):
         if self._validate_matrix(matrix):
-            self.matrix = self._normalize_matrix(matrix)
+            self.matrix = matrix
         else:
             raise ValueError('Matrix has to be a 3 x 4 array.')
             
@@ -26,5 +26,28 @@ class Matrix:
             if 0 in matrix[i][:3]:
                 matrix[i] = [v1 + v2 for v1, v2 in zip(matrix[i], matrix[i-1])]
         return matrix
+   
+    '''
+    calculation algorithms
+    '''
     
+    def sort_matrix(self, matrix):
+        orders = [0,1,2]
+        lookup = {}
+        matrix = sorted(matrix, key=lambda row:(row.count(0)))
+        for i in range(3):
+           for j in range(3):
+               if matrix[i][j] != 0 and j in orders:
+                   lookup[j] = matrix[i]
+                   orders.remove(j)
+        sorted_matrix = []
+        sorted_matrix = [lookup[k] for k in range(3)]
+        return sorted_matrix
     
+    def _element_to_one(self, row, index):
+        return [e/row[index] for e in row]
+    
+    def 
+       
+    def solve_matrix(self):
+        pass
