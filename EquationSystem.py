@@ -41,14 +41,16 @@ class EquationSystem:
     '''
     
     def _sort_matrix(self):
-        orders = [0,1,2]
+        # sort matrix to avoid 0 at the diagonal (Interchanging rows)
+        indexes = [0,1,2]
         lookup = {}
-        matrix = sorted(self.matrix, key=lambda row:(row.count(0)), reverse=True)
+        # the rows contains more 0 is prioritized
+        matrix = sorted(self.matrix, key=lambda row:(row[:3].count(0)), reverse=True)
         for i in range(3):
            for j in range(3):
-               if matrix[i][j] != 0 and j in orders:
-                   lookup[j] = matrix[i]
-                   orders.remove(j)
+               if matrix[i][j] != 0 and j in indexes: # not zero and not sorted
+                   lookup[j] = matrix[i] # assign row to dict with its index as the key
+                   indexes.remove(j) # remove index from the list
                    break
         sorted_matrix = []
         sorted_matrix = [lookup[k] for k in range(3)]
