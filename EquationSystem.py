@@ -32,6 +32,7 @@ class EquationSystem:
         return matrix
     
     def _print_matrix(self):
+        # Print matrix in a human friendly way
         for i in range(3):
             print(self.matrix[i])
    
@@ -81,60 +82,60 @@ class EquationSystem:
         # step 1: rearrange matrix
         self._sort_matrix()
         if print_steps:
-            print('Step 1:')
+            print('Step 1: Rm <-> Rn')
             self._print_matrix()
         # --------------------------
         # step 2: turn a into 1
         self._element_to_one(0, 0)
         if print_steps:
-            print('Step 2:')
+            print('\nStep 2: R1 <- R1/a')
             self._print_matrix()
         # --------------------------
         # step 3: turn b into 0
         self._element_to_zero(1, 0, 0)
         if print_steps:
-            print('Step 3:')
+            print('\nStep 3: R2 <- -bR1 + R2')
             self._print_matrix()
         # --------------------------
         # step 4: turn c into 0
         self._element_to_zero(2, 0, 0)
         if print_steps:
-            print('Step 4:')
+            print('\nStep 4: R3 <- -cR1 + R3')
             self._print_matrix()
         # --------------------------
         # step 5: turn d into 1
         self._element_to_one(1, 1)
         if print_steps:
-            print('Step 5:')
+            print('\nStep 5: R2 <- R2/d')
             self._print_matrix()
         # --------------------------
         # step 6: turn e into 0
         self._element_to_zero(2, 1, 1)
         if print_steps:
-            print('Step 6:')
+            print('\nStep 6: R3 <- -eR2 + R3')
             self._print_matrix()
         # --------------------------
         # step 7: turn f into 0
         self._element_to_zero(0, 1, 1)
         if print_steps:
-            print('Step 7:')
+            print('\nStep 7: R1 <- -fR2 + R1')
             self._print_matrix()
         # step 8: turn g into 1
         self._element_to_one(2, 2)
         if print_steps:
-            print('Step 8:')
+            print('\nStep 8: R3 <- R3/g')
             self._print_matrix()
         # --------------------------
         # step 9: turn h into 0
         self._element_to_zero(1, 2, 2)
         if print_steps:
-            print('Step 9:')
+            print('\nStep 9: R2 <- -hR3 + R2')
             self._print_matrix()
         # --------------------------
         # step 10: turn h into 0
         self._element_to_zero(0, 2, 2)
         if print_steps:
-            print('Step 10:')
+            print('\nStep 10: R1 <- -iR3 + R1')
             self._print_matrix()      
 
         # Return answer
