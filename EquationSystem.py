@@ -33,7 +33,7 @@ class EquationSystem:
     
     def _print_matrix(self):
         # Print matrix in a human friendly way
-        for i in range(3):
+        for i in range(len(self.matrix)):
             print(self.matrix[i])
    
     '''
@@ -59,6 +59,11 @@ class EquationSystem:
     def _element_to_one(self, row_index, elem_index):
         # divide a number to turn the target element into 1 
         element = self.matrix[row_index][elem_index]
+        if element == 0:
+            print('\nWarning: Problem is diverted.')
+            self.matrix = self.matrix[:2]
+            self._print_matrix()
+            raise ValueError(f'x{elem_index+1} is a free variable')
         new_row = [e/element for e in self.matrix[row_index]]
         self.matrix[row_index] = new_row
     
