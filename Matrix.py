@@ -6,6 +6,9 @@ Created on Thu Nov  2 20:48:28 2023
 """
 
 class Matrix:
+    '''
+    init and basic functions
+    '''
     
     def __init__(self, matrix):
         if self._validate_matrix(matrix):
@@ -59,8 +62,80 @@ class Matrix:
         # Apply -a*Rx + Ry to turn the target element into 0
         element = self.matrix[target_row_index][elem_index]
         combiner = [-a*element for a in self.matrix[assis_row_index]]
-        new_row = [c*t for c,t in zip(combiner, self.matrix[target_row_index])]
+        new_row = [c+t for c,t in zip(combiner, self.matrix[target_row_index])]
         self.matrix[target_row_index] = new_row
+    
+    '''
+    Program
+    '''
+    
+    def solve_matrix(self, print_steps = False):
+        # main program function to solve matrix problems
+        # assume after step 1, the matrix become: 
+        # | a f i * |
+        # | b d h * |
+        # | c e g * |
         
-    def solve_matrix(self):
-        pass
+        # ---------------------------
+        # step 1: rearrange matrix
+        self._sort_matrix()
+        if print_steps:
+            print('Step 1:')
+            self._print_matrix()
+        # --------------------------
+        # step 2: turn a into 1
+        self._element_to_one(0, 0)
+        if print_steps:
+            print('Step 2:')
+            self._print_matrix()
+        # --------------------------
+        # step 3: turn b into 0
+        self._element_to_zero(1, 0, 0)
+        if print_steps:
+            print('Step 3:')
+            self._print_matrix()
+        # --------------------------
+        # step 4: turn c into 0
+        self._element_to_zero(2, 0, 0)
+        if print_steps:
+            print('Step 4:')
+            self._print_matrix()
+        # --------------------------
+        # step 5: turn d into 1
+        self._element_to_one(1, 1)
+        if print_steps:
+            print('Step 5:')
+            self._print_matrix()
+        # --------------------------
+        # step 6: turn e into 0
+        self._element_to_zero(2, 1, 1)
+        if print_steps:
+            print('Step 6:')
+            self._print_matrix()
+        # --------------------------
+        # step 7: turn f into 0
+        self._element_to_zero(0, 1, 1)
+        if print_steps:
+            print('Step 7:')
+            self._print_matrix()
+        # step 8: turn g into 1
+        self._element_to_one(2, 2)
+        if print_steps:
+            print('Step 8:')
+            self._print_matrix()
+        # --------------------------
+        # step 9: turn h into 0
+        self._element_to_zero(1, 2, 2)
+        if print_steps:
+            print('Step 9:')
+            self._print_matrix()
+        # --------------------------
+        # step 10: turn h into 0
+        self._element_to_zero(0, 2, 2)
+        if print_steps:
+            print('Step 10:')
+            self._print_matrix()      
+
+        # Return answer
+        return [row[-1] for row in self.matrix]
+        
