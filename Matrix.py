@@ -149,7 +149,7 @@ class Matrix:
     '''
     Matrix operations
     '''
-    def _is_addable(m1, m2):
+    def _is_addable(self, m1, m2):
         # check if two matrixes are addable
         if not all(isinstance(row, list) for row in m1) or not all(isinstance(row, list) for row in m2):
             return False
@@ -159,6 +159,33 @@ class Matrix:
             return False
         return True
     
-    def addition(m1, m2):
+    def adds(self, m2):
+        # add 2 matrix objects and return a result matrix
+        m1 = self.matrix
+        m2 = m2.matrix
+        if not self._is_addable(m1, m2):
+            raise ValueError("The 2 matrixes are not addable")
+        height = len(m1)
+        width = len(m1[0]) 
+        sum = [[0]*width for _ in range(height)]
+        for i in range(height):
+            for j in range(width):
+                sum[i][j] = m1[i][j] + m2[i][j]
+        sum_matrix = Matrix(sum)
+        return sum_matrix
+    
+    def _is_multipliable(self, m1, m2):
+        # check if two matrixes are addable
+        if not all(isinstance(row, list) for row in m1) or not all(isinstance(row, list) for row in m2):
+            return False
+    
+    def times(self, m2):
+        pass
+        
+        
+    
+    
+            
+            
 
     
