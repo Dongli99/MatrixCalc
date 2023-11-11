@@ -5,17 +5,16 @@ Created on Thu Nov  2 20:48:28 2023
 @author: Dongli
 """
 
-class EquationSystem:
+class Matrix:
     
     '''
     init and basic functions
     '''
     
-    def __init__(self, matrix):
-        if self._validate_matrix(matrix):
-            self.matrix = matrix
-        else:
+    def __init__(self, matrix, isEquationSystem = False):
+        if isEquationSystem and not self._validate_matrix(matrix):
             raise ValueError('Matrix has to be a 3 x 4 array.')
+        self.matrix = matrix
             
     def _validate_matrix(self, matrix):
         # check if the matrix has 3 x 4 list
@@ -73,6 +72,8 @@ class EquationSystem:
         combiner = [-a*element for a in self.matrix[assis_row_index]]
         new_row = [c+t for c,t in zip(combiner, self.matrix[target_row_index])]
         self.matrix[target_row_index] = new_row
+        
+    
     
     '''
     Program
@@ -143,8 +144,21 @@ class EquationSystem:
         self._element_to_zero(0, 2, 2)
         if print_steps:
             print('\nStep 10: R1 <- -iR3 + R1')
-            self._print_matrix()      
+            self._print_matrix()
+            
+    '''
+    Matrix operations
+    '''
+    def _is_addable(m1, m2):
+        # check if two matrixes are addable
+        if not all(isinstance(row, list) for row in m1) or not all(isinstance(row, list) for row in m2):
+            return False
+        if len(m1) != len(m2):
+            return False
+        if any(len(row) != len(m2[0]) for row in m1) or any(len(row) != len(m1[0]) for row in m2):
+            return False
+        return True
+    
+    def addition(m1, m2):
 
-        # Return answer
-        return [round(row[-1], 2) for row in self.matrix]
-        
+    
