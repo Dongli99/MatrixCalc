@@ -159,7 +159,7 @@ class Matrix:
             return False
         return True
     
-    def adds(self, m2):
+    def add(self, m2):
         # add 2 matrix objects and return a result matrix
         m1 = self.matrix
         m2 = m2.matrix
@@ -209,6 +209,13 @@ class Matrix:
                 product[i][j] = m[i][j] * scalar
         product_matrix = Matrix(product)
         return product_matrix
+       
+    def minus(self, m2):
+        m2 = m2.matrix
+        neg =  [[-a for a in row] for row in m2]
+        neg_m2 = Matrix(neg)
+        return self.add(neg_m2)
+    
     
     
     
