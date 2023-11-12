@@ -175,17 +175,26 @@ class Matrix:
         return sum_matrix
     
     def _is_multipliable(self, m1, m2):
-        # check if two matrixes are addable
+        # check if two matrixes are multipliable
         if not all(isinstance(row, list) for row in m1) or not all(isinstance(row, list) for row in m2):
             return False
+        if len(m1[0]) != len(m2):
+            return False
+        return True
     
-    def times(self, m2):
-        pass
+    def multiply(self, m2):
+        m1 = self.matrix
+        m2 = m2.matrix
+        if not self._is_multipliable(m1, m2):
+            raise ValueError("The 2 matrixes are not multipliable")
+        height = len(m1)
+        width = len(m2[0])
+        common = len(m1[0])
+        product = [[0] * width for _ in range(height)]
+        for i in range(height):
+            for j in range(width):
+                for c in range(common):
+                    product[i][j] += m1[i][c]*m2[c][j]
+        product_matrix = Matrix(product)
+        return product_matrix
         
-        
-    
-    
-            
-            
-
-    
