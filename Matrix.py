@@ -183,13 +183,16 @@ class Matrix:
         return True
     
     def multiply(self, m2):
+        # multiply matrixes.  
+        if isinstance(m2, (int, float)): # If one is scalar, redirect it.
+            return self._scalar_multiply(m2)
         m1 = self.matrix
         m2 = m2.matrix
         if not self._is_multipliable(m1, m2):
             raise ValueError("The 2 matrixes are not multipliable")
         height = len(m1)
         width = len(m2[0])
-        common = len(m1[0])
+        common = len(m1[0]) # a size of the common row/col, aka, cols of A or rows of B
         product = [[0] * width for _ in range(height)]
         for i in range(height):
             for j in range(width):
@@ -197,4 +200,15 @@ class Matrix:
                     product[i][j] += m1[i][c]*m2[c][j]
         product_matrix = Matrix(product)
         return product_matrix
-        
+    
+    def _scalar_multiply(self, scalar):
+        m = self.matrix
+        product = [[0] * len(m[0]) for _ in range(len(m))]
+        for i in range(len(m)):
+            for j in range(len(m[0])):
+                product[i][j] = m[i][j] * scalar
+        product_matrix = Matrix(product)
+        return product_matrix
+    
+    
+    
