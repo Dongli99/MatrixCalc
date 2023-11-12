@@ -216,6 +216,11 @@ class Matrix:
         neg_m2 = Matrix(neg)
         return self.add(neg_m2)
     
-    
+    def trace(self):
+        m = self.matrix
+        if len(m) != len(m[0]):
+            raise ValueError('Not square Matrix. Not possible')
+        tr = sum(m[i][i] for i in range(len(m)))
+        return tr
     
     
