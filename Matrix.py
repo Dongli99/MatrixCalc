@@ -221,12 +221,14 @@ class Matrix:
         return product_matrix
        
     def minus(self, m2):
+        # subtraction between matrices 
         m2 = m2.matrix
         neg =  [[-a for a in row] for row in m2]
         neg_m2 = Matrix(neg)
         return self.add(neg_m2)
     
     def trace(self):
+        # get the trace of matrix. Aka., the sum in main diagonal
         m = self.matrix
         if len(m) != len(m[0]):
             raise ValueError('Not square Matrix. Not possible')
@@ -234,6 +236,7 @@ class Matrix:
         return tr
     
     def _combine_matrix(self, m2):
+        # combine matrix so the width of the result will be wa + wb.
         m1 = self.matrix
         m2 = m2.matrix
         combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
@@ -241,18 +244,18 @@ class Matrix:
         return combined_matrix
     
     def _right_half(self):
+        # get the right half of the matrix for 3x3(or more) inversion
         m = self.matrix
         width = len(m[0])
-        if width/2 != 0:
+        
+        if width%2 != 0:
             raise ValueError('Odd width!')
         right = [row[width//2:] for row in m]
         right_matrix = Matrix(right)
         return right_matrix
             
     def inverse(self):
-        combined = [r1 + r2 for r1, r2 in zip(self.matrix, self.I)]
-        combined_matrix = Matrix(combined)
-        transformed = self.solve_matrix(combined_matrix).matrix
+        
         
         
         
