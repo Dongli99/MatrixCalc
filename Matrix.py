@@ -15,7 +15,15 @@ class Matrix:
         if isEquationSystem and not self._validate_matrix(matrix):
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
+        self.I = self._generate_i()
             
+    def _generate_i(self):
+        # generate I according to the dimension of the self.matrix
+        height = len(self.matrix)
+        width = len(self.matrix[0])
+        I = [[1 if i == j else 0 for j in range(width)] for i in range(height)]
+        return I
+    
     def _validate_matrix(self, matrix):
         # check if the matrix has 3 x 4 list
         if isinstance(matrix, list) and len(matrix)==3:
@@ -146,6 +154,8 @@ class Matrix:
             print('\nStep 10: R1 <- -iR3 + R1')
             self._print_matrix()
             
+        return self.matrix
+            
     '''
     Matrix operations
     '''
@@ -222,5 +232,29 @@ class Matrix:
             raise ValueError('Not square Matrix. Not possible')
         tr = sum(m[i][i] for i in range(len(m)))
         return tr
+    
+    def _combine_matrix(self, m2):
+        m1 = self.matrix
+        m2 = m2.matrix
+        combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
+        combined_matrix = Matrix(combined)
+        return combined_matrix
+    
+    def _right_half(self):
+        m = self.matrix
+        width = len(m[0])
+        if width/2 != 0:
+            raise ValueError('Odd width!')
+        right = [row[width//2:] for row in m]
+        right_matrix = Matrix(right)
+        return right_matrix
+            
+    def inverse(self):
+        combined = [r1 + r2 for r1, r2 in zip(self.matrix, self.I)]
+        combined_matrix = Matrix(combined)
+        transformed = self.solve_matrix(combined_matrix).matrix
+        
+        
+        
     
     
