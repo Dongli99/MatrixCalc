@@ -22,7 +22,8 @@ class Matrix:
         height = len(self.matrix)
         width = len(self.matrix[0])
         I = [[1 if i == j else 0 for j in range(width)] for i in range(height)]
-        return I
+        I_matrix = Matrix(I)
+        return I_matrix
     
     def _validate_matrix(self, matrix):
         # check if the matrix has 3 x 4 list
@@ -247,16 +248,15 @@ class Matrix:
         # get the right half of the matrix for 3x3(or more) inversion
         m = self.matrix
         width = len(m[0])
-        
-        if width%2 != 0:
+        if width%2 != 0: # check wrong odd matrix
             raise ValueError('Odd width!')
         right = [row[width//2:] for row in m]
         right_matrix = Matrix(right)
         return right_matrix
             
     def inverse(self):
-        
-        
+        # calculate the inverse matrix
+        return self._combine_matrix(self.I).solve_matrix()._right_half()
         
         
     
