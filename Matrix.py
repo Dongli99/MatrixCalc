@@ -228,6 +228,8 @@ class Matrix:
        
     def minus(self, m2):
         # subtraction between matrices 
+        if not self._is_addable(self.matrix, m2.matrix):
+            raise ValueError("The 2 matrixes are not subtractable")
         neg =  [[-a for a in row] for row in m2.matrix]
         neg_m2 = Matrix(neg)
         return self.add(neg_m2)
