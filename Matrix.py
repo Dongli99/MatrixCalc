@@ -11,8 +11,8 @@ class Matrix:
     init and basic functions
     '''
     
-    def __init__(self, matrix, isEquationSystem = False):
-        if isEquationSystem and not self._validate_matrix(matrix):
+    def __init__(self, matrix, is_equation_system = False):
+        if is_equation_system and not self._validate_matrix(matrix):
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
         self.height = len(self.matrix)
@@ -38,7 +38,7 @@ class Matrix:
                 matrix[i] = [v1 + v2 for v1, v2 in zip(matrix[i], matrix[i-1])]
         return matrix
     
-    def _print_matrix(self):
+    def print_matrix(self):
         # Print matrix in a human friendly way
         for i in range(len(self.matrix)):
             print([round(num,2) for num in self.matrix[i]])
@@ -49,17 +49,17 @@ class Matrix:
     
     def _sort_matrix(self):
         # sort matrix to avoid 0 at the diagonal (Interchanging rows)
-        indexes = [0,1,2]
+        indexes = [n for n in range(self.height)]
         lookup = {}
         # the rows contains more 0 is prioritized
         matrix = sorted(self.matrix, key=lambda row:(row[:3].count(0)), reverse=True)
-        for i in range(3):
-           for j in range(3):
+        for i in range(self.height):
+           for j in range(self.width):
                if matrix[i][j] != 0 and j in indexes: # not zero and not sorted
                    lookup[j] = matrix[i] # assign row to dict with its index as the key
                    indexes.remove(j) # remove index from the list
                    break
-        sorted_matrix = [lookup[k] for k in range(3)]
+        sorted_matrix = [lookup[k] for k in range(self.height)]
         self.matrix = sorted_matrix
     
     def _element_to_one(self, row_index, elem_index):
@@ -68,7 +68,7 @@ class Matrix:
         if element == 0:
             print('\nWarning: Problem is diverted.')
             self.matrix = self.matrix[:2]
-            self._print_matrix()
+            self.print_matrix()
             raise ValueError(f'x{elem_index+1} is a free variable')
         new_row = [e/element for e in self.matrix[row_index]]
         self.matrix[row_index] = new_row
@@ -80,8 +80,6 @@ class Matrix:
         new_row = [c+t for c,t in zip(combiner, self.matrix[target_row_index])]
         self.matrix[target_row_index] = new_row
         
-    
-    
     '''
     Program
     '''
@@ -98,63 +96,72 @@ class Matrix:
         self._sort_matrix()
         if print_steps:
             print('Step 1: Rm <-> Rn')
-            self._print_matrix()
+            self.print_matrix()
         # --------------------------
         # step 2: turn a into 1
         self._element_to_one(0, 0)
         if print_steps:
             print('\nStep 2: R1 <- R1/a')
-            self._print_matrix()
+            self.print_matrix()
         # --------------------------
         # step 3: turn b into 0
         self._element_to_zero(1, 0, 0)
         if print_steps:
             print('\nStep 3: R2 <- -bR1 + R2')
-            self._print_matrix()
+            self.print_matrix()
         # --------------------------
         # step 4: turn c into 0
-        self._element_to_zero(2, 0, 0)
-        if print_steps:
-            print('\nStep 4: R3 <- -cR1 + R3')
-            self._print_matrix()
+        if self.height == 3:
+            self._element_to_zero(2, 0, 0)
+            if print_steps:
+                print('\nStep 4: R3 <- -cR1 + R3')
+                self.print_matrix()
         # --------------------------
         # step 5: turn d into 1
         self._element_to_one(1, 1)
         if print_steps:
             print('\nStep 5: R2 <- R2/d')
-            self._print_matrix()
+            self.print_matrix()
         # --------------------------
         # step 6: turn e into 0
-        self._element_to_zero(2, 1, 1)
-        if print_steps:
-            print('\nStep 6: R3 <- -eR2 + R3')
-            self._print_matrix()
+        if self.height == 3:
+            self._element_to_zero(2, 1, 1)
+            if print_steps:
+                print('\nStep 6: R3 <- -eR2 + R3')
+                self.print_matrix()
         # --------------------------
         # step 7: turn f into 0
         self._element_to_zero(0, 1, 1)
         if print_steps:
             print('\nStep 7: R1 <- -fR2 + R1')
-            self._print_matrix()
+            self.print_matrix()
         # step 8: turn g into 1
-        self._element_to_one(2, 2)
-        if print_steps:
-            print('\nStep 8: R3 <- R3/g')
-            self._print_matrix()
+        if self.height == 3:
+            self._element_to_one(2, 2)
+            if print_steps:
+                print('\nStep 8: R3 <- R3/g')
+                self.print_matrix()
         # --------------------------
         # step 9: turn h into 0
-        self._element_to_zero(1, 2, 2)
-        if print_steps:
-            print('\nStep 9: R2 <- -hR3 + R2')
-            self._print_matrix()
+            self._element_to_zero(1, 2, 2)
+            if print_steps:
+                print('\nStep 9: R2 <- -hR3 + R2')
+                self.print_matrix()
         # --------------------------
         # step 10: turn h into 0
-        self._element_to_zero(0, 2, 2)
-        if print_steps:
-            print('\nStep 10: R1 <- -iR3 + R1')
-            self._print_matrix()
+            self._element_to_zero(0, 2, 2)
+            if print_steps:
+                print('\nStep 10: R1 <- -iR3 + R1')
+                self.print_matrix()
             
         return self
+    
+    def display_solution(self, print_steps = False):
+        # print a read friendly solution
+        solution = self.solve_matrix(print_steps)
+        print(f'\nThe solution is: {[round(row[-1],2) for row in solution.matrix]}')
             
+
     '''
     Matrix operations
     '''
