@@ -88,7 +88,8 @@ Syntax - `A.inverse()`
 a = [[1,-2],
      [3,-1]]
 A = Matrix(a).inverse()
-A.print_matrix()  # print_matrix() is a function output matrix with good appearance
+A.print_matrix()
+# print_matrix() prints matrix with good appearance
 ```
 
 ```python
@@ -104,7 +105,6 @@ a = [[1,-2, 5],
      [4, 5, 9]]
 A = Matrix(a).inverse()
 A.print_matrix()  
-# print_matrix() prints matrix with good appearance
 ```
 
 ```python
