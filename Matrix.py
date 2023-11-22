@@ -16,14 +16,16 @@ class Matrix:
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
         self.I = self._generate_i()
+        self.width = len(self.matrix[0])
+        self.height = len(self.matrix)
+
             
     def _generate_i(self):
         # generate I according to the dimension of the self.matrix
         height = len(self.matrix)
         width = len(self.matrix[0])
         I = [[1 if i == j else 0 for j in range(width)] for i in range(height)]
-        I_matrix = Matrix(I)
-        return I_matrix
+        return I
     
     def _validate_matrix(self, matrix):
         # check if the matrix has 3 x 4 list
@@ -42,7 +44,7 @@ class Matrix:
     def _print_matrix(self):
         # Print matrix in a human friendly way
         for i in range(len(self.matrix)):
-            print(self.matrix[i])
+            print([round(num,2) for num in self.matrix[i]])
    
     '''
     3 core calculation algorithms
@@ -155,7 +157,7 @@ class Matrix:
             print('\nStep 10: R1 <- -iR3 + R1')
             self._print_matrix()
             
-        return self.matrix
+        return self
             
     '''
     Matrix operations
@@ -256,7 +258,7 @@ class Matrix:
             
     def inverse(self):
         # calculate the inverse matrix
-        return self._combine_matrix(self.I).solve_matrix()._right_half()
+        return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
         
         
     
