@@ -15,16 +15,13 @@ class Matrix:
         if isEquationSystem and not self._validate_matrix(matrix):
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
-        self.I = self._generate_i()
-        self.width = len(self.matrix[0])
         self.height = len(self.matrix)
-
+        self.width = len(self.matrix[0])        
+        self.I = self._generate_i()
             
     def _generate_i(self):
         # generate I according to the dimension of the self.matrix
-        height = len(self.matrix)
-        width = len(self.matrix[0])
-        I = [[1 if i == j else 0 for j in range(width)] for i in range(height)]
+        I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
         return I
     
     def _validate_matrix(self, matrix):
@@ -35,7 +32,7 @@ class Matrix:
         return False
     
     def _normalize_matrix(self, matrix):
-        # Transform lines that contains 0 in the first 3 elements
+        # Transform rows that contains 0 in the first 3 elements
         for i in range(3):
             if 0 in matrix[i][:3]:
                 matrix[i] = [v1 + v2 for v1, v2 in zip(matrix[i], matrix[i-1])]
@@ -62,7 +59,6 @@ class Matrix:
                    lookup[j] = matrix[i] # assign row to dict with its index as the key
                    indexes.remove(j) # remove index from the list
                    break
-        sorted_matrix = []
         sorted_matrix = [lookup[k] for k in range(3)]
         self.matrix = sorted_matrix
     
@@ -178,11 +174,9 @@ class Matrix:
         m2 = m2.matrix
         if not self._is_addable(m1, m2):
             raise ValueError("The 2 matrixes are not addable")
-        height = len(m1)
-        width = len(m1[0]) 
-        sum = [[0]*width for _ in range(height)]
-        for i in range(height):
-            for j in range(width):
+        sum = [[0]*self.width for _ in range(self.height)]
+        for i in range(self.height):
+            for j in range(self.width):
                 sum[i][j] = m1[i][j] + m2[i][j]
         sum_matrix = Matrix(sum)
         return sum_matrix
@@ -197,15 +191,17 @@ class Matrix:
     
     def multiply(self, m2):
         # multiply matrixes.  
-        if isinstance(m2, (int, float)): # If one is scalar, redirect it.
+        if isinstance(m2, (int, float)): 
+            # If one is scalar, redirect it to another function.
             return self._scalar_multiply(m2)
         m1 = self.matrix
         m2 = m2.matrix
         if not self._is_multipliable(m1, m2):
             raise ValueError("The 2 matrixes are not multipliable")
-        height = len(m1)
+        height = self.height
         width = len(m2[0])
-        common = len(m1[0]) # a size of the common row/col, aka, cols of A or rows of B
+        common = self.width
+        # a size of the common row/col, aka, cols of A or rows of B
         product = [[0] * width for _ in range(height)]
         for i in range(height):
             for j in range(width):
@@ -215,27 +211,25 @@ class Matrix:
         return product_matrix
     
     def _scalar_multiply(self, scalar):
-        m = self.matrix
-        product = [[0] * len(m[0]) for _ in range(len(m))]
-        for i in range(len(m)):
-            for j in range(len(m[0])):
-                product[i][j] = m[i][j] * scalar
+        # Calculate matrix x scalar
+        product = [[0] * self.width for _ in range(self.height)]
+        for i in range(self.height):
+            for j in range(self.width):
+                product[i][j] = self.matrix[i][j] * scalar
         product_matrix = Matrix(product)
         return product_matrix
        
     def minus(self, m2):
         # subtraction between matrices 
-        m2 = m2.matrix
-        neg =  [[-a for a in row] for row in m2]
+        neg =  [[-a for a in row] for row in m2.matrix]
         neg_m2 = Matrix(neg)
         return self.add(neg_m2)
     
     def trace(self):
         # get the trace of matrix. Aka., the sum in main diagonal
-        m = self.matrix
-        if len(m) != len(m[0]):
+        if self.height != self.width:
             raise ValueError('Not square Matrix. Not possible')
-        tr = sum(m[i][i] for i in range(len(m)))
+        tr = sum(self.matrix[i][i] for i in range(self.height))
         return tr
     
     def _combine_matrix(self, m2):
@@ -249,7 +243,7 @@ class Matrix:
     def _right_half(self):
         # get the right half of the matrix for 3x3(or more) inversion
         m = self.matrix
-        width = len(m[0])
+        width = self.width
         if width%2 != 0: # check wrong odd matrix
             raise ValueError('Odd width!')
         right = [row[width//2:] for row in m]
@@ -260,6 +254,6 @@ class Matrix:
         # calculate the inverse matrix
         return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
         
-        
+    
     
     
