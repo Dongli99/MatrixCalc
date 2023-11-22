@@ -2,8 +2,8 @@
 
 ## Overview
 
-***purpose*** - This project is designed to solve Matrix problems. The purpose of this project is to practice and enhance the knowledge of both Linear Algebra and Python.  
-***Keep updating*** - New features will be added along study of Linear Algebra.
+***Purpose*** - This project is designed to solve Matrix problems. The purpose of this project is to practice and enhance the knowledge of both Linear Algebra and Python.  
+***Updating*** - New features will be added along study of Linear Algebra.
 
 ## How to use
 
@@ -163,7 +163,7 @@ C.print_matrix()
 ValueError: The 2 matrixes are not addable
 ```
 
-#### subtraction
+#### Subtraction
 
 Syntax - `A.minus(B)`
 
