@@ -39,13 +39,20 @@ class Matrix:
         # Print matrix in a human friendly way
         for i in range(len(self.matrix)):
             print([round(num,2) for num in self.matrix[i]])
-   
+            
+        
     '''
-    3 core calculation algorithms
+    Linear Equation Algorithms
     '''
+# =============================================================================
+#     Gaussian Elimination
+# =============================================================================
     
     def _sort_matrix(self):
-        # sort matrix to avoid 0 at the diagonal (Interchanging rows)
+        '''
+        1st core function:
+        sort matrix to avoid 0 at the diagonal (Interchanging rows)
+        '''
         indexes = [n for n in range(self.height)]
         lookup = {}
         # the rows contains more 0 is prioritized
@@ -60,7 +67,10 @@ class Matrix:
         self.matrix = sorted_matrix
     
     def _element_to_one(self, row_index, elem_index):
-        # divide a number to turn the target element into 1 
+        '''
+        2nd core function:
+        divide a number to turn the target element into 1 
+        '''
         element = self.matrix[row_index][elem_index]
         if element == 0:
             print('\nWarning: Problem is diverted.')
@@ -71,23 +81,23 @@ class Matrix:
         self.matrix[row_index] = new_row
     
     def _element_to_zero(self, target_row_index, elem_index, assis_row_index):
+        '''
+        3rd core function:
         # Apply -a*Rx + Ry to turn the target element into 0
+        '''
         element = self.matrix[target_row_index][elem_index]
         combiner = [-a*element for a in self.matrix[assis_row_index]]
         new_row = [c+t for c,t in zip(combiner, self.matrix[target_row_index])]
-        self.matrix[target_row_index] = new_row
+        self.matrix[target_row_index] = new_row       
         
-    '''
-    Program
-    '''
-    
-    def solve_matrix(self, print_steps = False):
-        # main program function to solve matrix problems
+    def gaussian_elimination(self, print_steps = False):
+        '''
+        # main program function to solve matrix problems using the 3 core funcs
         # assume after step 1, the matrix become: 
         # | a f i * |
         # | b d h * |
         # | c e g * |
-        
+        '''
         # ---------------------------
         # step 1: rearrange matrix
         self._sort_matrix()
@@ -151,13 +161,25 @@ class Matrix:
                 print('\nStep 10: R1 <- -iR3 + R1')
                 self.print_matrix()
             
-        return self
+        return self    
     
-    def display_solution(self, print_steps = False):
-        # print a read friendly solution
-        solution = self.solve_matrix(print_steps)
-        print(f'\nThe solution is: {[round(row[-1],2) for row in solution.matrix]}')
+    '''
+    Linear Equation Sovling and displaying solutions
+    '''
+           
+    def solve_matrix(self, algorithm=None, print_steps = False):
+        # aggregate the algorithoms
+        if algorithm is None or algorithm == self.gaussian_elimination:
+            return self.gaussian_elimination(print_steps)
+        else:
+            algorithm(self, print_steps);
             
+    
+    def display_solution(self, algorithm=None, print_steps = False):
+        # print a read friendly solution
+        solution = self.solve_matrix(self.gaussian_elimination, print_steps)
+        print(f'\nThe solution is: {[round(row[-1],2) for row in solution.matrix]}')
+
 
     '''
     Matrix operations
