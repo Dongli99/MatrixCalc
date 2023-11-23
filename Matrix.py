@@ -8,7 +8,7 @@ Created on Thu Nov  2 20:48:28 2023
 class Matrix:
     
     '''
-    init and basic functions
+    init
     '''
     
     def __init__(self, matrix, is_equation_system = False):
@@ -18,6 +18,10 @@ class Matrix:
         self.height = len(self.matrix)
         self.width = len(self.matrix[0])        
         self.I = self._generate_i() # identity matrix
+        
+    '''
+    util funcs
+    '''
             
     def _generate_i(self):
         # generate I according to the dimension of the self.matrix
@@ -39,8 +43,25 @@ class Matrix:
         # Print matrix in a human friendly way
         for i in range(len(self.matrix)):
             print([round(num,2) for num in self.matrix[i]])
-            
-        
+    
+    def _combine_matrix(self, m2):
+        # combine matrix so the width of the result will be wa + wb.
+        m1 = self.matrix
+        m2 = m2.matrix
+        combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
+        combined_matrix = Matrix(combined)
+        return combined_matrix
+    
+    def _right_half(self):
+        # get the right half of the matrix for 3x3(or more) inversion
+        m = self.matrix
+        width = self.width
+        if width%2 != 0: # check wrong odd matrix
+            raise ValueError('Odd width!')
+        right = [row[width//2:] for row in m]
+        right_matrix = Matrix(right)
+        return right_matrix
+    
     '''
     Linear Equation Algorithms
     '''
@@ -259,28 +280,13 @@ class Matrix:
             raise ValueError('Not square Matrix. Not possible')
         tr = sum(self.matrix[i][i] for i in range(self.height))
         return tr
-    
-    def _combine_matrix(self, m2):
-        # combine matrix so the width of the result will be wa + wb.
-        m1 = self.matrix
-        m2 = m2.matrix
-        combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
-        combined_matrix = Matrix(combined)
-        return combined_matrix
-    
-    def _right_half(self):
-        # get the right half of the matrix for 3x3(or more) inversion
-        m = self.matrix
-        width = self.width
-        if width%2 != 0: # check wrong odd matrix
-            raise ValueError('Odd width!')
-        right = [row[width//2:] for row in m]
-        right_matrix = Matrix(right)
-        return right_matrix
             
     def inverse(self):
         # calculate the inverse matrix
         return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
+    
+    def det_2x2(self):
+        
         
     
     
