@@ -12,31 +12,28 @@ class Matrix:
     '''
     
     def __init__(self, matrix, is_equation_system = False):
-        if is_equation_system and not self._validate_matrix(matrix):
+        if is_equation_system and not self._validate_matrix():
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
         self.height = len(self.matrix)
         self.width = len(self.matrix[0])        
-        self.I = self._generate_i()
+        self.I = self._generate_i() # identity matrix
             
     def _generate_i(self):
         # generate I according to the dimension of the self.matrix
         I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
         return I
     
-    def _validate_matrix(self, matrix):
+    def _validate_matrix(self):
         # check if the matrix has 3 x 4 list
-        if isinstance(matrix, list) and len(matrix)==3:
-            if all(isinstance(row, list) and len(row) == 4 for row in matrix):
+        if isinstance(self.matrix, list) and len(self.matrix)==3:
+            if all(isinstance(row, list) and len(row) == 4 for row in self.matrix):
                 return True
         return False
-    
-    def _normalize_matrix(self, matrix):
-        # Transform rows that contains 0 in the first 3 elements
-        for i in range(3):
-            if 0 in matrix[i][:3]:
-                matrix[i] = [v1 + v2 for v1, v2 in zip(matrix[i], matrix[i-1])]
-        return matrix
+      
+    def _is_squarematrix(self):
+        # check if the matrix is a square matrix
+        return self.height == self.width
     
     def print_matrix(self):
         # Print matrix in a human friendly way
