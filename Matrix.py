@@ -12,7 +12,7 @@ class Matrix:
     '''
     
     def __init__(self, matrix, is_equation_system = False):
-        if is_equation_system and not self._validate_matrix():
+        if is_equation_system and not self._validate_ls_matrix():
             raise ValueError('Matrix has to be a 3 x 4 array.')
         self.matrix = matrix
         self.height = len(self.matrix)
@@ -28,7 +28,7 @@ class Matrix:
         I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
         return I
     
-    def _validate_matrix(self):
+    def _validate_ls_matrix(self):
         # check if the matrix has 3 x 4 list
         if isinstance(self.matrix, list) and len(self.matrix)==3:
             if all(isinstance(row, list) and len(row) == 4 for row in self.matrix):
@@ -61,6 +61,9 @@ class Matrix:
         right = [row[width//2:] for row in m]
         right_matrix = Matrix(right)
         return right_matrix
+    
+    def _on_diagonal(self, row_index,col_index):
+        return row_index == col_index or row_index + col_index == self.height - 1
     
     '''
     Linear Equation Algorithms
@@ -289,7 +292,7 @@ class Matrix:
     
     '''
     
-    Determinant, Joint, Minor, Cofactor, 
+    Determinant, Joint, Minor, Cofactor 
     
     '''
     
@@ -300,7 +303,7 @@ class Matrix:
         return self.matrix[0][0] * self.matrix[1][1] - self.matrix[1][0] * self.matrix[0][1]
     
     def adjoint_2x2(self):
-        # return adjoint of a 2x2 matrix 
+        # return adjoint of a 2x2 matrix or a minor of 3x3
         if self.height != 2 or self.width!=2:
             raise ValueError("Not a 2x2 matrix!")
         adj = [[self.matrix[1][1],-self.matrix[0][1]], 
@@ -313,6 +316,11 @@ class Matrix:
         if not self.height == self.width:
             return False
         return self.det()!=0
+    
+    def det(self):
+        # calculate the determinant of a matrix
+        if not self.is_squarematrix():
+            raise ValueError("Only square matrix can have determinand")
         
         
         
