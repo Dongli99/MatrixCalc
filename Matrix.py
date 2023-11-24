@@ -286,8 +286,12 @@ class Matrix:
         # get the trace of matrix. Aka., the sum in main diagonal
         if self.height != self.width:
             raise ValueError('Not square Matrix. Not possible')
-        tr = sum(self.matrix[i][i] for i in range(self.height))
-        return tr
+        trace = sum(self.matrix[i][i] for i in range(self.height))
+        return trace
+    
+    def transpose(self):
+        tranposed = [[self.matrix[j][i] for j in range(self.width)] for i in range(self.height)]
+        return Matrix(tranposed)
             
     def inverse(self):
         # calculate the inverse matrix
@@ -326,6 +330,7 @@ class Matrix:
         # calculate the determinant of a matrix
         if not self.is_squarematrix():
             raise ValueError("Only square matrix can have determinand")
+        # using 
         
         
         
