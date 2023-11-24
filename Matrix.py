@@ -283,7 +283,15 @@ class Matrix:
             
     def inverse(self):
         # calculate the inverse matrix
+        if not self.is_invertable():
+            raise ValueError("The matrix is not invertable.")
         return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
+    
+    '''
+    
+    Determinant, Joint, Minor, Cofactor, 
+    
+    '''
     
     def det_2x2(self):
         # return determine of a 2x2 matrix
@@ -291,17 +299,20 @@ class Matrix:
             raise ValueError("Not a 2x2 matrix!")
         return self.matrix[0][0] * self.matrix[1][1] - self.matrix[1][0] * self.matrix[0][1]
     
-    def joint_2x2(self):
-        # return joint of a 2x2 matrix 
+    def adjoint_2x2(self):
+        # return adjoint of a 2x2 matrix 
         if self.height != 2 or self.width!=2:
             raise ValueError("Not a 2x2 matrix!")
-        j = [[self.matrix[1][1],-self.matrix[0][1]], 
+        adj = [[self.matrix[1][1],-self.matrix[0][1]], 
              [-self.matrix[1][0], self.matrix[0][0]]]
-        joint_matrix = Matrix(j)
-        return joint_matrix
+        adjoint_matrix = Matrix(adj)
+        return adjoint_matrix
     
     def is_invertable(self):
-        if 
+        # check if a matrix have a inverse or not
+        if not self.height == self.width:
+            return False
+        return self.det()!=0
         
         
         
