@@ -286,8 +286,9 @@ class Matrix:
         return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
     
     def det_2x2(self):
-        
-        
-    
+        # return determine 
+        if self.height != 2 or self.width!=2:
+            raise ValueError("Not a 2x2 matrix!")
+        return self.matrix[0][0] * self.matrix[1][1] - self.matrix[1][0] * self.matrix[0][1]
     
     
