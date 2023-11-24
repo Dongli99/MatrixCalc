@@ -284,14 +284,15 @@ class Matrix:
     
     def trace(self):
         # get the trace of matrix. Aka., the sum in main diagonal
-        if self.height != self.width:
+        if not self._is_squarematrix():
             raise ValueError('Not square Matrix. Not possible')
         trace = sum(self.matrix[i][i] for i in range(self.height))
         return trace
     
     def transpose(self):
-        tranposed = [[self.matrix[j][i] for j in range(self.width)] for i in range(self.height)]
-        return Matrix(tranposed)
+        transposed = [[0] * self.height for _ in range(self.width)]
+        transposed = [[self.matrix[j][i] for j in range(self.height)] for i in range(self.width)]
+        return Matrix(transposed)
             
     def inverse(self):
         # calculate the inverse matrix

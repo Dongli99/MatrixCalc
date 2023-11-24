@@ -114,6 +114,25 @@ A.print_matrix()
 [0.31, -0.21, 0.08]
 ```
 
+#### Tanspose
+
+Syntax - `A.transpose()`
+
+```python
+a = [[1, -1, -2],
+     [1, 1, 3],
+     [2, -1, 1]]
+A = Matrix(a)
+A.transpose().print_matrix()
+```
+
+```python
+# output
+[1, 1, 2]
+[-1, 1, -1]
+[-2, 3, 1]
+```
+
 #### Trace
 
 Syntax - `A.trace()`
