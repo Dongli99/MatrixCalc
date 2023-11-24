@@ -24,7 +24,7 @@ a = [[1,2,3],
 A = Matrix(a)
 ```
 
-### Solve an Equation System 
+### Solve a Linear Equation System  
 
 Syntax - `A.display_solution([print_steps = False])`
 
