@@ -10,12 +10,12 @@
 ### Before use
 
 - `git clone https://github.com/Dongli99/MatrixCalc.git`
-- Create a python file under MatrixCalc/
-- In the file, type ```from Matrix import Matrix```
+- Create a python script under MatrixCalc/
+- on the top of the script, paste ```from Matrix import Matrix```
 
 ### Declare a Matrix Object  
 
-Syntax - `A = Matrix(a [,is_equation_system=False])`
+Syntax - `A = Matrix(a,is_equation_system=False)`
 
 ```python
 a = [[1,2,3],
@@ -26,12 +26,11 @@ A = Matrix(a)
 
 ### Solve a Linear Equation System  
 
-Syntax - `A.display_solution([print_steps = False])`
+Syntax - `A.display_solution(print_steps=False) -> void`
 
 #### Only display the answer
 
 ```python
-from Matrix import Matrix
 a = [[1,-2,4,1],
      [3,-1,4,-1],
      [-3,-1,1,8]]
@@ -81,7 +80,7 @@ The solution is: [-3.0, 4.0, 3.0]
 
 #### Inverse
 
-Syntax - `A.inverse()`
+Syntax - `A.inverse() -> Matrix`
 
 ```python
 # Inverse of a 2x2 matrix
@@ -114,9 +113,9 @@ A.print_matrix()
 [0.31, -0.21, 0.08]
 ```
 
-#### Tanspose
+#### Transpose
 
-Syntax - `A.transpose()`
+Syntax - `A.transpose() -> Matrix`
 
 ```python
 a = [[1, -1, -2],
@@ -135,7 +134,7 @@ A.transpose().print_matrix()
 
 #### Trace
 
-Syntax - `A.trace()`
+Syntax - `A.trace() -> Matrix`
 
 ```python
 a = [[1,-2, 5],
@@ -154,7 +153,7 @@ ValueError: Not square Matrix. Not possible
 
 #### Addition
 
-Syntax - `A.add(B)`
+Syntax - `A.add(B) -> Matrix`
 
 ```python
 a = [[1,-2, 5],
@@ -184,7 +183,7 @@ ValueError: The 2 matrixes are not addable
 
 #### Subtraction
 
-Syntax - `A.minus(B)`
+Syntax - `A.minus(B) -> Matrix`
 
 ```python
 a = [[1,-2, 5],
@@ -210,7 +209,7 @@ ValueError: The 2 matrixes are not subtractable
 
 #### Multiply
 
-Syntax - `A.multiply(B)`
+Syntax - `A.multiply(B) -> Matrix`
 
 ```python
 ## Matrix x Matrix
@@ -239,4 +238,44 @@ C.print_matrix()
 [5, -10, 25]
 [15, -5, 30]
 [20, 25, 45]
+```
+
+### Determinant and Adjoint
+
+#### Determinant
+
+Syntax - `A.det() -> float`
+
+```python
+# Can handel 2x2 and 3x3 matrices
+a = [[3, 2, -1],
+     [1, 6, 3],
+     [2, -4, 0]]
+A = Matrix(a)
+det = A.det()
+print(det)
+```
+
+```python
+# output
+[12, 6, -16]
+[4, 2, 16]
+[12, -10, 16]
+```
+
+#### Adjoint
+
+Syntax - `A.adjoint() -> Matrix`
+
+```python
+# Can handel 2x2 and 3x3 matrices
+adj = A.adjoint()
+adj.print_matrix()
+```
+
+```python
+# output
+[12, 6, -16]
+[4, 2, 16]
+[12, -10, 16]
 ```
