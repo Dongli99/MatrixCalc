@@ -24,6 +24,25 @@ a = [[1,2,3],
 A = Matrix(a)
 ```
 
+### Recommended approaches
+
+- Chain the methods is recommended.
+
+```python
+# A simple example using the method chain.
+# In this example, the matrix is inverted, transposed, and then multiply a scalar. 
+c = [[3,-1],
+     [4,2]]
+res = C.inverse().transpose().multiply(10)
+res.print_matrix()
+```
+
+```python
+# output
+[2.0, -4.0]
+[1.0, 3.0]
+```
+
 ### Solve a Linear Equation System  
 
 Syntax - `A.display_solution(print_steps=False) -> void`
