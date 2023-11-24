@@ -329,10 +329,18 @@ class Matrix:
     
     def det(self):
         # calculate the determinant of a matrix
-        if not self.is_squarematrix():
+        if not self._is_squarematrix():
             raise ValueError("Only square matrix can have determinand")
-        # using 
-        
-        
-        
-        
+        if self.width == 2:
+            return self.det_2x2()
+        # using Cofactor Expansion
+        det = 0
+        for i in range(self.width):
+            minor_matrix = self._minor_matrix(2, i)
+            minor_matrix.print_matrix()
+            minor = minor_matrix.det_2x2()
+            print(minor)
+            cofactor = minor if self._on_diagonal(2, i) else -minor
+            print(cofactor)
+            det += cofactor * self.matrix[2][i]
+        return det
