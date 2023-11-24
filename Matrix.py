@@ -20,57 +20,6 @@ class Matrix:
         self.I = self._generate_i() # identity matrix
         
     '''
-    util funcs
-    '''
-            
-    def _generate_i(self):
-        # generate I according to the dimension of the self.matrix
-        I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
-        return I
-    
-    def _validate_ls_matrix(self):
-        # check if the matrix has 3 x 4 list
-        if isinstance(self.matrix, list) and len(self.matrix)==3:
-            if all(isinstance(row, list) and len(row) == 4 for row in self.matrix):
-                return True
-        return False
-      
-    def _is_squarematrix(self):
-        # check if the matrix is a square matrix
-        return self.height == self.width
-    
-    def print_matrix(self):
-        # Print matrix in a human friendly way
-        for i in range(len(self.matrix)):
-            print([round(num,2) for num in self.matrix[i]])
-    
-    def _combine_matrix(self, m2):
-        # combine matrix so the width of the result will be wa + wb.
-        m1 = self.matrix
-        m2 = m2.matrix
-        combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
-        combined_matrix = Matrix(combined)
-        return combined_matrix
-    
-    def _right_half(self):
-        # get the right half of the matrix for 3x3(or more) inversion
-        m = self.matrix
-        width = self.width
-        if width%2 != 0: # check wrong odd matrix
-            raise ValueError('Odd width!')
-        right = [row[width//2:] for row in m]
-        right_matrix = Matrix(right)
-        return right_matrix
-    
-    def _on_diagonal(self, row_index,col_index):
-        return row_index == col_index or row_index + col_index == self.height - 1
-    
-    def _minor_matrix(self, row_index, col_index):
-        minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
-                 for i in range(self.width) if i!=row_index]
-        return Matrix(minor)
-    
-    '''
     Linear Equation Algorithms
     '''
 # =============================================================================
@@ -336,11 +285,75 @@ class Matrix:
         # using Cofactor Expansion
         det = 0
         for i in range(self.width):
-            minor_matrix = self._minor_matrix(2, i)
-            minor_matrix.print_matrix()
+            minor_matrix = self._minor_matrix(0, i)
             minor = minor_matrix.det_2x2()
-            print(minor)
-            cofactor = minor if self._on_diagonal(2, i) else -minor
-            print(cofactor)
-            det += cofactor * self.matrix[2][i]
+            cofactor = minor if self._on_diagonal(0, i) else -minor
+            det += cofactor * self.matrix[0][i]
         return det
+    
+    def adjoint(self):
+        # calculate the adjoint matrix of a 3x3 matrix
+        if self.height == 2:
+            return self.adjoint_2x2()
+        adj = [[0] * self.width for _ in range(self.height)]
+        for i in range(self.height):
+            for j in range(self.width):
+                minor = self._minor_matrix(i, j).det_2x2()
+                cofactor = minor if self._on_diagonal(i, j) else -minor
+                adj[i][j] = cofactor
+        return Matrix(adj)
+        
+    '''
+    util funcs
+    '''
+            
+    def _generate_i(self):
+        # generate I according to the dimension of the self.matrix
+        I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
+        return I
+    
+    def _validate_ls_matrix(self):
+        # check if the matrix has 3 x 4 list
+        if isinstance(self.matrix, list) and len(self.matrix)==3:
+            if all(isinstance(row, list) and len(row) == 4 for row in self.matrix):
+                return True
+        return False
+      
+    def _is_squarematrix(self):
+        # check if the matrix is a square matrix
+        return self.height == self.width
+    
+    def print_matrix(self):
+        # Print matrix in a human friendly way
+        for i in range(len(self.matrix)):
+            print([round(num,2) for num in self.matrix[i]])
+    
+    def _combine_matrix(self, m2):
+        # combine matrix so the width of the result will be wa + wb.
+        m1 = self.matrix
+        m2 = m2.matrix
+        combined = [r1 + r2 for r1, r2 in zip(m1, m2)]        
+        combined_matrix = Matrix(combined)
+        return combined_matrix
+    
+    def _right_half(self):
+        # get the right half of the matrix for 3x3(or more) inversion
+        m = self.matrix
+        width = self.width
+        if width%2 != 0: # check wrong odd matrix
+            raise ValueError('Odd width!')
+        right = [row[width//2:] for row in m]
+        right_matrix = Matrix(right)
+        return right_matrix
+    
+    def _on_diagonal(self, row_index,col_index):
+        return row_index == col_index or row_index + col_index == self.height - 1
+    
+    def _minor_matrix(self, row_index, col_index):
+        minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
+                 for i in range(self.width) if i!=row_index]
+        return Matrix(minor)
+    
+    
+        
+    
