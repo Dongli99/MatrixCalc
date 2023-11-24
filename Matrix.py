@@ -65,6 +65,11 @@ class Matrix:
     def _on_diagonal(self, row_index,col_index):
         return row_index == col_index or row_index + col_index == self.height - 1
     
+    def _minor_matrix(self, row_index, col_index):
+        minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
+                 for i in range(self.width) if i!=row_index]
+        return Matrix(minor)
+    
     '''
     Linear Equation Algorithms
     '''
