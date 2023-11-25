@@ -29,8 +29,8 @@ A = Matrix(a)
 - Chain the methods is recommended.
 
 ```python
-# A simple example using the method chain.
-# In this example, the matrix is inverted, transposed, and then multiply a scalar. 
+# Example 1.
+# In this example, the matrix is inverted, transposed, and then multiply a scalar. ((C^-1)^T)10
 c = [[3,-1],
      [4,2]]
 res = C.inverse().transpose().multiply(10)
@@ -41,6 +41,12 @@ res.print_matrix()
 # output
 [2.0, -4.0]
 [1.0, 3.0]
+```
+
+```python
+# Example 1.
+# In this example, the matrix is inverted, transposed, and then multiply a scalar. ((C^-1)^T)10
+
 ```
 
 ### Solve a Linear Equation System  
@@ -263,7 +269,7 @@ C.print_matrix()
 
 #### Determinant
 
-Syntax - `A.det() -> float`
+Syntax - `A.det() -> float/int`
 
 ```python
 # Can handel 2x2 and 3x3 matrices

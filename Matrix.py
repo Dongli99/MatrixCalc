@@ -22,13 +22,13 @@ class Matrix:
     '''
     Linear Equation Algorithms
     '''
-# =============================================================================
-#     Gaussian Elimination
-# =============================================================================
+   # ==========================================================================
+   #   1. Sovle with Gaussian Elimination
+   # ==========================================================================
     
     def _sort_matrix(self):
         '''
-        1st core function:
+        1st core operation:
         sort matrix to avoid 0 at the diagonal (Interchanging rows)
         '''
         indexes = [n for n in range(self.height)]
@@ -46,7 +46,7 @@ class Matrix:
     
     def _element_to_one(self, row_index, elem_index):
         '''
-        2nd core function:
+        2nd core operation:
         divide a number to turn the target element into 1 
         '''
         element = self.matrix[row_index][elem_index]
@@ -60,7 +60,7 @@ class Matrix:
     
     def _element_to_zero(self, target_row_index, elem_index, assis_row_index):
         '''
-        3rd core function:
+        3rd core operation:
         # Apply -a*Rx + Ry to turn the target element into 0
         '''
         element = self.matrix[target_row_index][elem_index]
@@ -71,6 +71,7 @@ class Matrix:
     def gaussian_elimination(self, print_steps = False):
         '''
         # main program function to solve matrix problems using the 3 core funcs
+        # aka. row operations
         # assume after step 1, the matrix become: 
         # | a f i * |
         # | b d h * |
@@ -139,8 +140,58 @@ class Matrix:
                 print('\nStep 10: R1 <- -iR3 + R1')
                 self.print_matrix()
             
-        return self    
+        return self
     
+   # ==========================================================================
+   #   2. Solve with Inverse of Matrix   
+   # ==========================================================================
+
+    def inverse_solution(self, print_steps = False):
+        '''
+        For a Linear Equation System AX = B:
+                |a11, a12, a13|
+        Let A = |a21, a22, a23|, B = |b1,b2,b3|, X = |x1,x2,x3|
+                |a31, a32, a33|
+        --> X = (A^-1)B
+        This function invokes minor, cofactor, determinant, and adjoint
+        '''
+        # prepare: split matrix
+        A = [row[:-1] for row in self.matrix]
+        print(A)
+        A = Matrix(A)
+        B = [[row[-1]] for row in self.matrix]
+        print(B)
+        B = Matrix(B)
+        # step 1: calculate determinant
+        det = A.det()
+        # step 2: calculate adjoint
+        adj = A.adjoint()
+        # step 3: calculate inverse
+        inv = adj.multiply(1/det)
+        # step 4: calculate solution
+        X = inv.multiply(B)
+        # print steps
+        if print_steps:
+            print('Left hand matrix:')
+            A.print_matrix()
+            print('Left hand matrix:')
+            B.print_matrix()
+            print(f'1. determinant of A: {det}') 
+            print('2. adjoint of A:')
+            adj.print_matrix()
+            print('3. inverse of A:') 
+            inv.print_matrix()
+            print('4. final solution:')
+            X.print_matrix()
+        return X
+        
+   # ==========================================================================
+   #   3. Solve Linear Equation with Cramer’s Rule 
+   # ==========================================================================
+
+    def cramers_rule(self, print_steps = False):
+        pass
+
     '''
     Linear Equation Sovling and displaying solutions
     '''
@@ -150,14 +201,22 @@ class Matrix:
         if algorithm is None or algorithm == self.gaussian_elimination:
             return self.gaussian_elimination(print_steps)
         else:
-            algorithm(self, print_steps);
-            
+            return algorithm(print_steps)          
     
-    def display_solution(self, algorithm=None, print_steps = False):
-        # print a read friendly solution
-        solution = self.solve_matrix(self.gaussian_elimination, print_steps)
+    def display_solution(self, print_steps = False):
+        # conduct a user friendly communication
+        if print_steps:
+            algo_index = input('What algorithm do you want to choose?\na: gaussian_elimination\nb: Inverse of Matrix\nc: Cramer’s Rule ')
+            match algo_index:
+                case 'b':
+                    solution = self.solve_matrix(self.inverse_solution, print_steps)
+                case 'c':
+                    solution = self.solve_matrix(self.cramers_rule, print_steps)
+                case _:
+                    solution = self.solve_matrix(self.gaussian_elimination, print_steps)    
+        else:
+            solution = self.solve_matrix(self.gaussian_elimination, print_steps)
         print(f'\nThe solution is: {[round(row[-1],2) for row in solution.matrix]}')
-
 
     '''
     Matrix operations
@@ -175,7 +234,11 @@ class Matrix:
     def add(self, m2):
         # add 2 matrix objects and return a result matrix
         m1 = self.matrix
-        m2 = m2.matrix
+        if isinstance(m2, (int, float)): 
+            # If one is scalar, redirect it to another function.
+            m2 = Matrix(self.I)._scalar_multiply(m2).matrix
+        else:
+            m2 = m2.matrix
         if not self._is_addable(m1, m2):
             raise ValueError("The 2 matrixes are not addable")
         sum = [[0]*self.width for _ in range(self.height)]
@@ -279,7 +342,7 @@ class Matrix:
     def det(self):
         # calculate the determinant of a matrix
         if not self._is_squarematrix():
-            raise ValueError("Only square matrix can have determinand")
+            raise ValueError("Only square matrix can have determinant")
         if self.width == 2:
             return self.det_2x2()
         # using Cofactor Expansion
@@ -295,13 +358,14 @@ class Matrix:
         # calculate the adjoint matrix of a 3x3 matrix
         if self.height == 2:
             return self.adjoint_2x2()
-        adj = [[0] * self.width for _ in range(self.height)]
+        ac = [[0] * self.width for _ in range(self.height)]
         for i in range(self.height):
             for j in range(self.width):
                 minor = self._minor_matrix(i, j).det_2x2()
                 cofactor = minor if self._on_diagonal(i, j) else -minor
-                adj[i][j] = cofactor
-        return Matrix(adj)
+                ac[i][j] = cofactor
+        adj = Matrix(ac).transpose()
+        return adj
         
     '''
     util funcs
@@ -347,9 +411,11 @@ class Matrix:
         return right_matrix
     
     def _on_diagonal(self, row_index,col_index):
+        # Check if aij is on the 2 diagonals of the matrix
         return row_index == col_index or row_index + col_index == self.height - 1
     
     def _minor_matrix(self, row_index, col_index):
+        # return sub matrix that not have the same row index or col index
         minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
                  for i in range(self.width) if i!=row_index]
         return Matrix(minor)
