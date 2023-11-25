@@ -1,5 +1,25 @@
 # MatrixCalc
 
+- [MatrixCalc](#matrixcalc)
+  - [Overview](#overview)
+  - [How to use](#how-to-use)
+    - [Before use](#before-use)
+    - [Declare a Matrix Object](#declare-a-matrix-object)
+    - [Recommended approach](#recommended-approach)
+    - [Solve a Linear Equation System](#solve-a-linear-equation-system)
+      - [Only display the answer](#only-display-the-answer)
+      - [Choose algorithms and display detailed steps](#choose-algorithms-and-display-detailed-steps)
+    - [Matrix Operations](#matrix-operations)
+      - [Inverse](#inverse)
+      - [Transpose](#transpose)
+      - [Trace](#trace)
+      - [Addition](#addition)
+      - [Subtraction](#subtraction)
+      - [Multiply](#multiply)
+    - [Determinant and Adjoint](#determinant-and-adjoint)
+      - [Determinant](#determinant)
+      - [Adjoint](#adjoint)
+
 ## Overview
 
 ***Purpose*** - This project is designed to solve Matrix problems. The purpose of this project is to practice and enhance the knowledge of both Linear Algebra and Python.  
