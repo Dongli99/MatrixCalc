@@ -158,10 +158,8 @@ class Matrix:
         '''
         # prepare: split matrix
         A = [row[:-1] for row in self.matrix]
-        print(A)
         A = Matrix(A)
         B = [[row[-1]] for row in self.matrix]
-        print(B)
         B = Matrix(B)
         # step 1: calculate determinant
         det = A.det()
@@ -190,40 +188,53 @@ class Matrix:
    #   3. Solve Linear Equation with Cramer’s Rule 
    # ==========================================================================
 
-    def _arrow_tech(self):
+    def det_arrow_tech(self):
         # using arrow technique to calculate the determinant
-        net = self._combine_matrix(Matrix(self.matrix[:-1])).matrix
-        start, from_left, from_right = 0, 0
+        net = self._combine_matrix(Matrix([row[:-1] for row in self.matrix])).matrix
+        start, from_left, from_right = 0, 0, 0
         while start < self.width: # sum the product of lines from left to right
             curr = [0, start]
             product = 1
-            while curr[0] < self.heitht:
+            while curr[0] < self.height:
                 product *= net[curr[0]][curr[1]]
                 curr[0] += 1
                 curr[1] += 1
             from_left += product
             start += 1
         start = self.width - 1
-        while start < net.width: # sum the product of lines from left to right
+        while start < len(net[0]): # sum the product of lines from left to right
             curr = [0, start]
             product = 1
-            while curr[0] < self.heitht:
+            while curr[0] < self.height:
                 product *= net[curr[0]][curr[1]]
                 curr[0] += 1
                 curr[1] -= 1
             from_right += product
             start += 1
-        det = from_left - from_right
+        det = from_left - from_right # subtracting to get determinant
         return det
+
+    def _replace_col(self, col, col_matrix):
+        # replce a col of the matrix with a column matrix
+        # for example, in AX=B, replace target row of A with B
+        if col_matrix.width != 1:
+            raise ValueError('Not a column matrix!')
+        A = self.matrix
+        for i in self.height:
+            A[i][col] = col_matrix.matrix[i]
+        return Matrix(A)
 
     def cramers_rule(self, print_steps = False):
         '''
         This algorithm calculate Xn = det(An)/det(A)
         For practice, this function use Arrow Technique to calculate det
         '''
-        
-        
-        pass
+        # prepare: split matrix
+        A = Matrix([row[:-1] for row in self.matrix])
+        B = Matrix([[row[-1]] for row in self.matrix])
+        for i in range(self.height):
+            det_Ai = A.
+
 
     '''
     Linear Equation Sovling and displaying solutions
