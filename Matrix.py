@@ -173,7 +173,7 @@ class Matrix:
         if print_steps:
             print('Left hand matrix:')
             A.print_matrix()
-            print('Left hand matrix:')
+            print('Right hand matrix:')
             B.print_matrix()
             print(f'1. determinant of A: {det}') 
             print('2. adjoint of A:')
@@ -239,7 +239,7 @@ class Matrix:
             x = det_Ai / det_A
             X.append([x])
             if print_steps:
-                print(f'setp {i+1}: \ndet(A{i+1})={det_Ai}, det(A)={det_A}, x{i+1}={x}')
+                print(f'step {i+1}: \ndet(A{i+1})={det_Ai}, det(A)={det_A}, x{i+1}={x}')
         return Matrix(X)
     
     '''

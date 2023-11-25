@@ -24,13 +24,12 @@ a = [[1,2,3],
 A = Matrix(a)
 ```
 
-### Recommended approaches
+### Recommended approach
 
 - Chain the methods is recommended.
 
 ```python
-# Example 1.
-# In this example, the matrix is inverted, transposed, and then multiply a scalar. ((C^-1)^T)10
+# Example: ((C^-1)^T)10
 c = [[3,-1],
      [4,2]]
 res = C.inverse().transpose().multiply(10)
@@ -41,12 +40,6 @@ res.print_matrix()
 # output
 [2.0, -4.0]
 [1.0, 3.0]
-```
-
-```python
-# Example 1.
-# In this example, the matrix is inverted, transposed, and then multiply a scalar. ((C^-1)^T)10
-
 ```
 
 ### Solve a Linear Equation System  
@@ -68,14 +61,24 @@ A.display_solution()
 The solution is: [-3.0, 4.0, 3.0]
 ```
 
-#### Display detailed steps
+#### Choose algorithms and display detailed steps
 
 ```python
 A.display_solution(True)
 ```
 
 ```python
-# output
+# display algorithm options
+What algorithm do you want to choose?
+a: gaussian_elimination
+b: Inverse of Matrix
+c: Cramer’s Rule
+```
+
+```python
+# if choose 'a' or any entry other than 'b' and 'c'
+# output of gaussian_elimination algorithm
+# also known as row operations
 Step 1: Rm <-> Rn
 [1, -2, 4, 1]
 [3, -1, 4, -1]
@@ -97,6 +100,50 @@ Step 10: R1 <- -iR3 + R1
 [1.0, 0.0, 0.0, -3.0]
 [0.0, 1.0, 0.0, 4.0]
 [0.0, 0.0, 1.0, 3.0]
+
+The solution is: [-3.0, 4.0, 3.0]
+```
+
+```python
+# if choose 'b'
+# output calculation using inverse approach
+# the algorithm involves determinant, cofactor, adjoint...
+Left hand matrix:
+[1, -2, 4]
+[3, -1, 4]
+[-3, -1, 1]
+Right hand matrix:
+[1]
+[-1]
+[8]
+1. determinant of A: 9
+2. adjoint of A:
+[3, -2, -4]
+[-15, 13, 8]
+[-6, 7, 5]
+3. inverse of A:
+[0.33, -0.22, -0.44]
+[-1.67, 1.44, 0.89]
+[-0.67, 0.78, 0.56]
+4. final solution:
+[-3.0]
+[4.0]
+[3.0]
+
+The solution is: [-3.0, 4.0, 3.0]
+```
+
+```python
+# if choose 'c'
+# output the steps using Cramer’s Rule
+# this rule uses arrow technique and xn = det(An)/det(A)
+
+step 1: 
+det(A1)=-27, det(A)=9, x1=-3.0
+step 2: 
+det(A2)=36, det(A)=9, x2=4.0
+step 3: 
+det(A3)=27, det(A)=9, x3=3.0
 
 The solution is: [-3.0, 4.0, 3.0]
 ```
