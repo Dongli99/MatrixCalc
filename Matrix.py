@@ -4,6 +4,7 @@ Created on Thu Nov  2 20:48:28 2023
 
 @author: Dongli
 """
+from copy import copy
 
 class Matrix:
     
@@ -189,7 +190,39 @@ class Matrix:
    #   3. Solve Linear Equation with Cramer’s Rule 
    # ==========================================================================
 
+    def _arrow_tech(self):
+        # using arrow technique to calculate the determinant
+        net = self._combine_matrix(Matrix(self.matrix[:-1])).matrix
+        start, from_left, from_right = 0, 0
+        while start < self.width: # sum the product of lines from left to right
+            curr = [0, start]
+            product = 1
+            while curr[0] < self.heitht:
+                product *= net[curr[0]][curr[1]]
+                curr[0] += 1
+                curr[1] += 1
+            from_left += product
+            start += 1
+        start = self.width - 1
+        while start < net.width: # sum the product of lines from left to right
+            curr = [0, start]
+            product = 1
+            while curr[0] < self.heitht:
+                product *= net[curr[0]][curr[1]]
+                curr[0] += 1
+                curr[1] -= 1
+            from_right += product
+            start += 1
+        det = from_left - from_right
+        return det
+
     def cramers_rule(self, print_steps = False):
+        '''
+        This algorithm calculate Xn = det(An)/det(A)
+        For practice, this function use Arrow Technique to calculate det
+        '''
+        
+        
         pass
 
     '''
@@ -419,7 +452,3 @@ class Matrix:
         minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
                  for i in range(self.width) if i!=row_index]
         return Matrix(minor)
-    
-    
-        
-    
