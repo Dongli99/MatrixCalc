@@ -219,9 +219,9 @@ class Matrix:
         # for example, in AX=B, replace target row of A with B
         if col_matrix.width != 1:
             raise ValueError('Not a column matrix!')
-        A = self.matrix
-        for i in self.height:
-            A[i][col] = col_matrix.matrix[i]
+        A = [[row[i] for i in range(self.width)] for row in self.matrix]
+        for i in range(self.height):
+            A[i][col] = col_matrix.matrix[i][0]
         return Matrix(A)
 
     def cramers_rule(self, print_steps = False):
@@ -232,10 +232,16 @@ class Matrix:
         # prepare: split matrix
         A = Matrix([row[:-1] for row in self.matrix])
         B = Matrix([[row[-1]] for row in self.matrix])
+        det_A = A.det_arrow_tech()
+        X = []
         for i in range(self.height):
-            det_Ai = A.
-
-
+            det_Ai = A._replace_col(i, B).det_arrow_tech()
+            x = det_Ai / det_A
+            X.append([x])
+            if print_steps:
+                print(f'setp {i+1}: \ndet(A{i+1})={det_Ai}, det(A)={det_A}, x{i+1}={x}')
+        return Matrix(X)
+    
     '''
     Linear Equation Sovling and displaying solutions
     '''
@@ -250,7 +256,7 @@ class Matrix:
     def display_solution(self, print_steps = False):
         # conduct a user friendly communication
         if print_steps:
-            algo_index = input('What algorithm do you want to choose?\na: gaussian_elimination\nb: Inverse of Matrix\nc: Cramer’s Rule ')
+            algo_index = input('What algorithm do you want to choose?\na: gaussian_elimination\nb: Inverse of Matrix\nc: Cramer’s Rule\n')
             match algo_index:
                 case 'b':
                     solution = self.solve_matrix(self.inverse_solution, print_steps)
