@@ -79,8 +79,11 @@ class Matrix:
         # | c e g * |
         '''
         # ---------------------------
-        # step 1: rearrange matrix
-        self._sort_matrix()
+        # step 1: rearrange matrix        
+        try:
+            self._sort_matrix()
+        except Exception:
+            raise ValueError('Too many 0s, try another algorithm.')
         if print_steps:
             print('Step 1: Rm <-> Rn')
             self.print_matrix()
