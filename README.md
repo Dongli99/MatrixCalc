@@ -48,8 +48,10 @@ A = Matrix(a)
 
 - Chain the methods is recommended.
 
+Example 1: $((C^{-1})^T)*{10}$
+
 ```python
-# Example: ((C^-1)^T)10
+# Example 1: ((C^-1)^T)10
 c = [[3,-1],
      [4,2]]
 res = C.inverse().transpose().multiply(10)
@@ -60,6 +62,23 @@ res.print_matrix()
 # output
 [2.0, -4.0]
 [1.0, 3.0]
+```
+
+Example 2:
+ $AC(AC)^{-1}(DA^{-1})^{-1}(AD^T)^TA^T(B^{-1}A^T)^{-1}B^{-1}$
+
+```python
+# After declaring any 4 metrics (better square metrics)
+res = A.multiply(C).multiply(A.multiply(C).inverse()).multiply(D.multiply(A.inverse()).inverse()).multiply(A.multiply(D.transpose()).transpose()).multiply(A.transpose()).multiply(B.inverse().multiply(A.transpose()).inverse()).multiply(B.inverse())
+# print result
+res.print_matrix()
+```
+
+```python
+# output. After simplifying, the formula turns to be a symmetric Matrix
+[20.0, -36.0, -8.0]
+[-36.0, 85.0, 7.0]
+[-8.0, 7.0, 6.0]
 ```
 
 ### Solve a Linear Equation System  
