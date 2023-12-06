@@ -48,7 +48,7 @@ A = Matrix(a)
 
 - Chain the methods is recommended.
 
-Example 1: $((C^{-1})^T)*{10}$
+Example 1: $(C^{-1})^T*{10}$
 
 ```python
 # Example 1: ((C^-1)^T)10

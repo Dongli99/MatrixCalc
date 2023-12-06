@@ -12,9 +12,7 @@ class Matrix:
     init
     '''
     
-    def __init__(self, matrix, is_equation_system = False):
-        if is_equation_system and not self._validate_ls_matrix():
-            raise ValueError('Matrix has to be a 3 x 4 array.')
+    def __init__(self, matrix):
         self.matrix = matrix
         self.height = len(self.matrix)
         self.width = len(self.matrix[0])        
@@ -249,8 +247,10 @@ class Matrix:
     Linear Equation Sovling and displaying solutions
     '''
            
-    def solve_matrix(self, algorithm=None, print_steps = False):
+    def solve_matrix(self, algorithm=None, print_steps=False, strict=False):
         # aggregate the algorithoms
+        if strict and not self._is_equation_matrix():
+            raise ValueError("The matrix must be a 3x4 matrix.")
         if algorithm is None or algorithm == self.gaussian_elimination:
             return self.gaussian_elimination(print_steps)
         else:
@@ -350,7 +350,7 @@ class Matrix:
     def trace(self):
         # get the trace of matrix. Aka., the sum in main diagonal
         if not self._is_squarematrix():
-            raise ValueError('Not square Matrix. Not possible')
+            raise ValueError('Not square Matrix. Not possible for trace')
         trace = sum(self.matrix[i][i] for i in range(self.height))
         return trace
     
@@ -366,9 +366,7 @@ class Matrix:
         return self._combine_matrix(Matrix(self.I)).solve_matrix()._right_half()
     
     '''
-    
     Determinant, Joint, Minor, Cofactor 
-    
     '''
     
     def det_2x2(self):
@@ -429,7 +427,7 @@ class Matrix:
         I = [[1 if i == j else 0 for j in range(self.width)] for i in range(self.height)]
         return I
     
-    def _validate_ls_matrix(self):
+    def _is_equation_matrix(self):
         # check if the matrix has 3 x 4 list
         if isinstance(self.matrix, list) and len(self.matrix)==3:
             if all(isinstance(row, list) and len(row) == 4 for row in self.matrix):
@@ -472,3 +470,12 @@ class Matrix:
         minor = [[self.matrix[i][j] for j in range(self.width) if j!=col_index]
                  for i in range(self.width) if i!=row_index]
         return Matrix(minor)
+    
+class Vector:
+    
+    def __init__(self, head, tail=[0,0]):
+        self.head = head
+        if tail==[0,0] and len(self.head > 2): 
+            self.tail = [0 * len(self.head)]
+        else:
+            self.tail = tail
