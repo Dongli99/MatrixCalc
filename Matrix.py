@@ -4,7 +4,7 @@ Created on Thu Nov  2 20:48:28 2023
 
 @author: Dongli
 """
-from copy import copy
+from math import sqrt
 
 class Matrix:
     
@@ -472,10 +472,28 @@ class Matrix:
         return Matrix(minor)
     
 class Vector:
-    
+    '''
+    init
+    '''
     def __init__(self, head, tail=[0,0]):
         self.head = head
-        if tail==[0,0] and len(self.head > 2): 
-            self.tail = [0 * len(self.head)]
+        if tail==[0,0] and len(self.head) > 2: # handle length
+            self.tail = [0] * len(self.head)
         else:
             self.tail = tail
+        self.vector = [ h-t for h,t in zip(self.head,self.tail)]
+        self.magnitude = self.nomalize()
+        
+    '''
+    utils
+    '''    
+    def is_identical(self, vector):
+        return all(v == u for v,u in zip(self.vector,vector.vector))
+    
+    def nomalize(self):
+        return sqrt(sum(pow(value, 2) for value in self.vector))
+    
+    '''
+    operations
+    '''
+    
