@@ -4,7 +4,7 @@ Created on Thu Nov  2 20:48:28 2023
 
 @author: Dongli
 """
-from math import sqrt, acos, cos, radians, degrees
+from math import sqrt, acos, cos, radians, degrees, asin
 
 class Matrix:
     
@@ -509,6 +509,9 @@ class Vector:
     def is_unit_vector(self): # check if the vector is a unit vector
         return self.unit_vector().is_equal_to(self)
     
+    def distance(a, b, c, x0, y0):
+        # this is a special func to calc distance of (x0, y0) to ax+by+c=0
+        return abs(a*x0 + b*y0 + c)/sqrt(a*a + b*b)
 
     '''
     operations
@@ -539,6 +542,10 @@ class Vector:
         return degrees(acos(self.dot_product(vector)/(
             self.normalize()*vector.normalize())))
     
+    def angle_cross_prod(self, vector): # get angle using cross product
+        return degrees(asin(self.cross_product(vector).normalize()/(
+            self.normalize()*vector.normalize())))
+    
     def is_perpendicular(self, vector): 
         # check if 2 vectors are perpendicular
         return self.dot_product(vector) == 0
@@ -555,5 +562,18 @@ class Vector:
     
     def proj_orth(self, vector): # projection along self
         return self.minus(self.proj_along(vector))
+    
+    def cross_product(self, vector): # cross product of vectors
+        m0 = Matrix([[self.vector[i] for i in range(3) if i!=0],
+              [vector.vector[j] for j in range(3) if j!=0]])
+        m1 = Matrix([[self.vector[i] for i in range(3) if i!=1],
+              [vector.vector[j] for j in range(3) if j!=1]])
+        m2 = Matrix([[self.vector[i] for i in range(3) if i!=2],
+              [vector.vector[j] for j in range(3) if j!=2]])
+        return Vector([m0.det(), -m1.det(), m2.det()])
+    
+    '''
+    geometrical significance
+    '''
     
     
