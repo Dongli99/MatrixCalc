@@ -484,6 +484,7 @@ class Vector:
             self.tail = tail
         self.vector = [ h-t for h,t in zip(self.head,self.tail)]
         self.magnitude = self.normalize()
+        self.dimension = len(self.vector)
         
     '''
     utils
@@ -576,4 +577,28 @@ class Vector:
     geometrical significance
     '''
     
+    def parallelogram_area(self, vector): # parallelogram_area of 2 vectors
+        if self.dimension == 2:
+            return abs(Matrix([self.vector, vector.vector]).det())
+        return self.cross_product(vector).normalize()
     
+    def triangle_area(self, vector): # triangle_area of 2 vectors
+        return self.parallelogram_area(vector) / 2
+    
+    def triangle_scalar(self, v, u): 
+        # retrun the trangle product scalar of 3 vectors
+        return self.dot_product(v.cross_product(u))
+    
+    def triangle_scalar_det(self, v, u): 
+        # retrun the trangle product scalar using det algorithm
+        return Matrix([self.vector, v.vector, u.vector]).det()
+    
+    def parallelepiped_vol(self, v, u): # volume of parallelepiped
+        return abs(self.triangle_scalar(v, u))
+    
+    def tetrahedron_vol(self, v, u): # volume of tetrahedron
+        return self.parallelepiped_vol(v, u)/3
+    
+    def are_coplanar(self, v, u): # check if 3 vectors on the same plane
+        return self.triangle_scalar(v, u) == 0
+        
