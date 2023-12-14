@@ -4,7 +4,7 @@ Created on Thu Nov  2 20:48:28 2023
 
 @author: Dongli
 """
-from math import sqrt
+from math import sqrt, acos, cos, radians
 
 class Matrix:
     
@@ -477,23 +477,65 @@ class Vector:
     '''
     def __init__(self, head, tail=[0,0]):
         self.head = head
+        self.zero = [0] * len(self.head)
         if tail==[0,0] and len(self.head) > 2: # handle length
-            self.tail = [0] * len(self.head)
+            self.tail = self.zero
         else:
             self.tail = tail
         self.vector = [ h-t for h,t in zip(self.head,self.tail)]
-        self.magnitude = self.nomalize()
+        self.magnitude = self.normalize()
         
     '''
     utils
     '''    
-    def is_identical(self, vector):
+    def is_equal_to(self, vector): # check if the 2 vectors are identical
         return all(v == u for v,u in zip(self.vector,vector.vector))
     
-    def nomalize(self):
+    def nagative_to(self, vector): # check if the 2 vectors are opposite
+        return all(v == -u for v,u in zip(self.vector,vector.vector))
+    
+    def normalize(self): # Ecliden norm of the vector
         return sqrt(sum(pow(value, 2) for value in self.vector))
+    
+    def print_vector(self): # print vector as a list
+        print([round(v, 2) for v in self.vector])
+        
+    def unit_vector(self): # get the unit vector(v^)
+        return self.scalar_multiply(1/self.normalize())
+    
+    def is_unit_vector(self): # check if the vector is a unit vector
+        return self.unit_vector().is_equal_to(self)
+    
+    def negtive(self): # given v, get -v
+        return Vector(self.zero).minus(self)
     
     '''
     operations
     '''
+    
+    def add(self, vector): # addition
+        res = [v + w for v,w in zip(self.vector, vector.vector)]
+        return Vector(res)
+    
+    def minus(self, vector): # subtraction
+        res = [v - w for v,w in zip(self.vector, vector.vector)]
+        return Vector(res) 
+    
+    def scalar_multiply(self, a): # times a scalar
+        res = [a * v for v in self.vector]
+        return Vector(res)
+
+    def midpoint(self, vector): # get the midpoint of 2 vectors
+        return self.add(vector).scalar_multiply(1/2)
+
+    def dot_product(self, vector): # dot product using components
+        return sum([v * w for v,w in zip(self.vector, vector.vector)])
+    
+    def dot_product_cos(v_norm, u_norm, angle): # dot product using angle
+        return v_norm * u_norm * cos(radians(angle))
+    
+    def get_angle(self, vector): # get degree of angle between u and v
+        return radians(acos(self.dot_product(vector)/(
+            self.normalize()*(vector.normalize()))))
+    
     
