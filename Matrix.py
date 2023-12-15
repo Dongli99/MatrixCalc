@@ -463,7 +463,7 @@ class Matrix:
     
     def _on_diagonal(self, row_index,col_index):
         # Check if aij is on the 2 diagonals of the matrix
-        return row_index == col_index or row_index + col_index == self.height - 1
+        return (row_index + col_index) % 2 == 0
     
     def _minor_matrix(self, row_index, col_index):
         # return sub matrix that not have the same row index or col index
@@ -483,9 +483,9 @@ class Vector:
         else:
             self.tail = tail
         self.vector = [ h-t for h,t in zip(self.head,self.tail)]
+        self.midpoint = [ (h+t)/2 for h,t in zip(self.head,self.tail)]
         self.magnitude = self.normalize()
         self.dimension = len(self.vector)
-        
     '''
     utils
     '''    
@@ -501,7 +501,7 @@ class Vector:
     def get_negtive(self): # given v, get -v
         return Vector(self.zero).minus(self)    
     
-    def normalize(self): # Ecliden norm of the vector
+    def normalize(self): # Euclidean norm of the vector
         return sqrt(sum(pow(value, 2) for value in self.vector))
         
     def get_unit_vector(self): # get the unit vector(v^)
@@ -529,9 +529,6 @@ class Vector:
     def scalar_multiply(self, a): # times a scalar
         res = [a * v for v in self.vector]
         return Vector(res)
-
-    def midpoint(self, vector): # get the midpoint of 2 vectors
-        return self.add(vector).scalar_multiply(1/2)
 
     def dot_product(self, vector): # dot product using components
         return sum([v * w for v,w in zip(self.vector, vector.vector)])
@@ -585,20 +582,20 @@ class Vector:
     def triangle_area(self, vector): # triangle_area of 2 vectors
         return self.parallelogram_area(vector) / 2
     
-    def triangle_scalar(self, v, u): 
+    def triangle_scalar(self, v, w): 
         # retrun the trangle product scalar of 3 vectors
-        return self.dot_product(v.cross_product(u))
+        return self.dot_product(v.cross_product(w))
     
-    def triangle_scalar_det(self, v, u): 
+    def triangle_scalar_det(self, v, w): 
         # retrun the trangle product scalar using det algorithm
-        return Matrix([self.vector, v.vector, u.vector]).det()
+        return Matrix([self.vector, v.vector, w.vector]).det()
     
-    def parallelepiped_vol(self, v, u): # volume of parallelepiped
-        return abs(self.triangle_scalar(v, u))
+    def parallelepiped_vol(self, v, w): # volume of parallelepiped
+        return abs(self.triangle_scalar(v, w))
     
-    def tetrahedron_vol(self, v, u): # volume of tetrahedron
-        return self.parallelepiped_vol(v, u)/3
+    def tetrahedron_vol(self, v, w): # volume of tetrahedron
+        return self.parallelepiped_vol(v, w)/3
     
-    def are_coplanar(self, v, u): # check if 3 vectors on the same plane
-        return self.triangle_scalar(v, u) == 0
+    def are_coplanar(self, v, w): # check if 3 vectors on the same plane
+        return self.triangle_scalar(v, w) == 0
         
